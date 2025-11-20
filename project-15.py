@@ -9,6 +9,8 @@ chart = TAChart(license_key)
 path_to_csv = 'data/project-15/'
 # All file names in the filepath
 csv_list = os.listdir(path_to_csv)
+price_df = pd.read_csv(path_to_csv + csv_list[0])
+yields_df = pd.read_csv(path_to_csv + csv_list[1])
 
 def preprocess(bond_term, country, source_df):
     "Perfrom any needed preprocessing to the data"
@@ -33,25 +35,20 @@ def preprocess(bond_term, country, source_df):
 def chart1():
     # Create dashboard, with x row(s) and x column(s)
     new_dashboard = chart.create_dashboard(2, 1)
-    # Indexes used to postiion charts to the dashboard
-    row_index = 0
-    column_index = 0
     # Country and their respective bonds used for dashboard
-    countries = ['US']
-    bond_term = ['US10']
-    price_df = pd.read_csv(path_to_csv + csv_list[0])
-    yields_df = pd.read_csv(path_to_csv + csv_list[1])
-    bond_index = 0
+    countries = 'US'
+    bond_term = 'US10'
     for country in countries:
         # Create a chart for bond prices and increment column index
-        chart_list = preprocess(bond_term=bond_term[bond_index], country=country, source_df=price_df) 
-        dashboard_chart = new_dashboard.add_chart('Line', row_index, column_index).set_data(chart_list) 
-        dashboard_chart.set_chart_title(f"Bond prices for {bond_term[bond_index]}")
-        row_index += 1
+        chart_list = preprocess(bond_term, country, price_df) 
+        dashboard_chart = new_dashboard.add_chart('Line', 0, 0).set_data(chart_list) 
+        dashboard_chart.set_chart_title(f"Bond prices for {bond_term}")
+
         # Another one for bond yields
-        chart_list = preprocess(bond_term=bond_term[bond_index], country=country, source_df=yields_df) 
-        dashboard_chart = new_dashboard.add_chart('Line', row_index, column_index).set_data(chart_list) 
-        dashboard_chart.set_chart_title(f"Bond yields for {bond_term[bond_index]}")
+        chart_list = preprocess(bond_term, country, yields_df) 
+        dashboard_chart = new_dashboard.add_chart('Line', 1, 0).set_data(chart_list) 
+        dashboard_chart.set_chart_title(f"Bond yields for {bond_term}")
+
         dashboard_chart.set_color_theme('darkGold')
     chart.open()
 
@@ -59,29 +56,22 @@ def chart1():
 def chart2():
     # Create dashboard, with x row(s) and x column(s)
     new_dashboard = chart.create_dashboard(2, 2)
-    # Indexes used to postiion charts to the dashboard
-    row_index = 0
-    column_index = 0
     # Country and their respective bonds used for dashboard
     countries = ['US', 'GB']
-    bond_term = ['US10', 'GB10']
-    price_df = pd.read_csv(path_to_csv + csv_list[0])
-    yields_df = pd.read_csv(path_to_csv + csv_list[1])
-    bond_index = 0
-    for country in countries:
+    bond_terms = ['US10', 'GB10']
+    for index, (country, bond_term) in enumerate(zip(countries, bond_terms)):
+        row_index = index
+
         # Create a chart for bond prices and increment column index
-        chart_list = preprocess(bond_term=bond_term[bond_index], country=country, source_df=price_df) 
-        dashboard_chart = new_dashboard.add_chart('Line', row_index, column_index).set_data(chart_list) 
-        dashboard_chart.set_chart_title(f"Bond prices for {bond_term[bond_index]}")
-        column_index += 1
+        chart_list = preprocess(bond_term, country, price_df) 
+        dashboard_chart = new_dashboard.add_chart('Line', row_index, 0).set_data(chart_list) 
+        dashboard_chart.set_chart_title(f"Bond prices for {bond_term}")
+
         # Another one for bond yields
-        chart_list = preprocess(bond_term=bond_term[bond_index], country=country, source_df=yields_df) 
-        dashboard_chart = new_dashboard.add_chart('Line', row_index, column_index).set_data(chart_list) 
-        dashboard_chart.set_chart_title(f"Bond yields for {bond_term[bond_index]}")
-        # Reset column index and increment row and bond indexes
-        column_index = 0
-        row_index += 1
-        bond_index += 1
+        chart_list = preprocess(bond_term, country, yields_df)
+        dashboard_chart = new_dashboard.add_chart('Line', row_index, 1).set_data(chart_list) 
+        dashboard_chart.set_chart_title(f"Bond yields for {bond_term}")
+        
         dashboard_chart.set_color_theme('darkGold')
     chart.open()
 
@@ -89,23 +79,18 @@ def chart2():
 def chart3():
     # Create dashboard, with x row(s) and x column(s)
     new_dashboard = chart.create_dashboard(2, 2)
-    row_index = 0
-    column_index = 0
     # Country used for dashboard
     country = 'US'
     # Bond terms from the selected country
     bond_term = ['US01', 'US05', 'US10', 'US20',]
-    # Source either prices.csv [0] or yields.csv [1]
-    source_df = pd.read_csv(path_to_csv + csv_list[1])
-    for bond_term in bond_term: 
-        chart_list = preprocess(bond_term, country, source_df) 
+
+    for index, bond in enumerate(bond_term): 
+        row_index = index // 2        # integer division to get the row index and in this way idx = 0, 1, 2, 3 will give row_index = 0, 0, 1, 1
+        column_index = index % 2     # modulus division to get the column index and in this way idx = 0, 1, 2, 3 will give column_index = 0, 1, 0, 1
+
+        chart_list = preprocess(bond, country, price_df) 
         dashboard_chart = new_dashboard.add_chart('Line', row_index, column_index).set_data(chart_list) 
-        dashboard_chart.set_chart_title(f"{country} bond yields for {bond_term}") 
-        # Position the charts to the dashboard
-        column_index += 1
-        if column_index >= 2:
-            column_index = 0
-            row_index += 1
+        dashboard_chart.set_chart_title(f"{country} bond prices for {bond}")
         
         dashboard_chart.set_color_theme('darkGold')
     chart.open()
@@ -114,24 +99,18 @@ def chart3():
 def chart4():
     # Create dashboard, with x row(s) and x column(s)
     new_dashboard = chart.create_dashboard(2, 2)
-    row_index = 0
-    column_index = 0
     # Country used for dashboard
     country = 'US'
     # Bond terms from the selected country
     bond_term = ['US01', 'US05', 'US10', 'US20',]
-    # Source either prices.csv [0] or yields.csv [1]
-    source_df = pd.read_csv(path_to_csv + csv_list[1])
-    for bond_term in bond_term: 
-        chart_list = preprocess(bond_term, country, source_df) 
-        dashboard_chart = new_dashboard.add_chart('Renko', row_index, column_index).set_data(chart_list) 
-        dashboard_chart.set_chart_title(f"{country} bond yields for {bond_term}") 
-        # Position the charts to the dashboard
-        column_index += 1
-        if column_index >= 2:
-            column_index = 0
-            row_index += 1
+    for index, bond in enumerate(bond_term): 
+        row_index = index // 2     
+        column_index = index % 2
+
+        chart_list = preprocess(bond, country, yields_df) 
+        dashboard_chart = new_dashboard.add_chart('Line', row_index, column_index).set_data(chart_list) 
+        dashboard_chart.set_chart_title(f"{country} bond yields for {bond}")
         
         dashboard_chart.set_color_theme('darkGold')
     chart.open()
-chart1()
+chart4()
