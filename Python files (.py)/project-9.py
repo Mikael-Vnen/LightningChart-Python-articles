@@ -15,6 +15,7 @@ csv_list = os.listdir(filepath)
 print(csv_list)
 # Trader instance initialization
 trader = TAChart(license_key)
+
 # Using Alphavantages ticker search api get the names of companies analyzed.
 for stock in csv_list:
     stock_ticker = stock.replace('.csv','')

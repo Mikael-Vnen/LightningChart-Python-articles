@@ -11,6 +11,12 @@ api_key_path = "API-key.txt"
 # Load the license key 
 api_key = open(api_key_path).read()
 
+# Variables used for the API call. 
+# More information regarding these can be found from Alphavantages documentation
+api_name = 'TIME_SERIES_DAILY_ADJUSTED'
+ticker = 'AAPL'
+outputsize = 'full'
+
 
 def stock_api_call(template):
     """Getting the stock data from the API.  Time out in 5 seconds in case the API doesn't respond (optional)"""
@@ -48,12 +54,7 @@ def apply_default_style():
 
     
 def open_chart1():
-    """Variables used for the API call. The license key is the same for all charts, everything else is set per chart basis.
-    More information regarding these can be found from Alphavantages documentation"""
-
-    api_name = 'TIME_SERIES_DAILY_ADJUSTED'
-    ticker = 'AAPL'
-    outputsize = 'full'
+    
     template_url = f'https://www.alphavantage.co/query?function={api_name}&symbol={ticker}&apikey={api_key}&outputsize={outputsize}'
     #Calls the api function with the specified url.
     stock_api_call(template_url)
@@ -66,9 +67,7 @@ def open_chart1():
 
 
 def open_chart2():
-    api_name = 'TIME_SERIES_WEEKLY_ADJUSTED'
-    ticker = 'AAPL'
-    outputsize = 'full'
+    
     template_url = f'https://www.alphavantage.co/query?function={api_name}&symbol={ticker}&apikey={api_key}&outputsize={outputsize}'
     # Make an API with the specified url.
     stock_api_call(template_url)
@@ -81,9 +80,7 @@ def open_chart2():
 
 
 def open_chart3():
-    api_name = 'TIME_SERIES_DAILY_ADJUSTED'
-    ticker = 'AAPL'
-    outputsize = 'full'
+   
     template_url = f'https://www.alphavantage.co/query?function={api_name}&symbol={ticker}&apikey={api_key}&outputsize={outputsize}'
     # Make an API with the specified url.
     stock_api_call(template_url)

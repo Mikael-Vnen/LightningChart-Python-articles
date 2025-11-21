@@ -2,9 +2,11 @@ import lightningchart as lc
 import pandas as pd
 import os
 from datetime import datetime
-license_key = 'P001-ZhUezT9ZksTWx1FNJa7ASzAy0S5zEAATHr1GLfqruMFRLEzDry9V-MEYCIQDvahFnLhfzgQ3cY2/d0/qZG5UhZz/otqsi0MhIKhSZqwIhAPxmnHhKYV3zg9SpffCU92GQiWfmny3GmSxtTz4d92vu'
+license_key_path = "LC-Python_License_key.txt" 
+# Load the license key and initializing Python trader
+license_key = open(license_key_path).read()
 # File path to where the dataset is located, os.listdir lists all the files from the directory.
-filepath = 'data/'
+filepath = 'data/project-8/'
 rates_csv = os.listdir(filepath)
 fraud_dataframe = pd.read_csv(filepath + rates_csv[0])
 lc.set_license(license_key)

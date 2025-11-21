@@ -5,7 +5,8 @@ import os
 
 license_key_path = "LC-Python_License_key.txt" 
 # Load the license key and initializing Python trader
-license_key = open(license_key_path).read()# File path to where the dataset is located, os.listdir lists all the files from the directory.
+license_key = open(license_key_path).read()
+# File path to where the dataset is located, os.listdir lists all the files from the directory.
 filepath = 'data/project-10/'
 rates_csv = os.listdir(filepath)
 lc.set_license(license_key)

@@ -26,20 +26,12 @@ dashboard = trader.create_dashboard(5, 2)
 row_index = 0
 column_index = 0
 use_adjusted = False
-# Loop used to import data to the trader. 
-for name, company in zip(company_names, csv_list):
+
+# Loop used to import data to the trader.
+for index, (name, company) in enumerate(zip(company_names, csv_list)):
+    row_index = index // 2
+    column_index = index % 2
     stock_dataframe = pd.read_csv(filepath + company)
-    if use_adjusted:
-        stock_dataframe = stock_dataframe.drop(columns= 'Close')
-        stock_dataframe = stock_dataframe.rename(columns={'Adj Close': 'Close'})
-    # Insert a chart to the dashboard and set the dataframe as the data source
     newchart = dashboard.add_chart('Line', row_index, column_index, title=name).set_data(stock_dataframe)
     newchart.add_volume()
-    # Increment the index and column number where the chart should be positioned.
-    if column_index == 1:
-        column_index = 0
-        row_index += 1
-    elif column_index == 0:
-        column_index += 1
-    print(f'Loading {name}...')
 trader.open()

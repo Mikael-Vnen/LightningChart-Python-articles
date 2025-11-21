@@ -10,12 +10,10 @@ trader = TAChart(license_key)
 api_key_path = "API-key.txt" 
 # Load the license key 
 key = open(api_key_path).read() 
-data_list = []
 
 def getData(api_name: str, data_interval: str):
     """Make an API call using the following parameters """
 
-    data_list = []
     # APi returns data as JSON thats converted into a Python dictionary
     call_url = f'https://www.alphavantage.co/query?function={api_name}&interval={data_interval}&apikey={key}'
     api_response = requests.get(call_url).json()

@@ -4,7 +4,6 @@ from lightningchart_trader import TAChart
 license_key_path = "Python-Trader_License_key.txt" 
 # Load the license key and initializing Python trader
 license_key = open(license_key_path).read()
-trader = TAChart(license_key)
 # api_name is the APi you wish to use for data eg: TIME_SERIES_DAILY. 'ticker' is the ticker specific stock eg: AAPL 
 # key is your Alphavantage API key
 # https://www.alphavantage.co/query?function=api_name&symbol=ticker&apikey=key
